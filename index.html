@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EVO – Better Space</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  color:white;
+  overflow-x:hidden;
+  background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.85)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 40px;
+  backdrop-filter:blur(25px);
+  background:rgba(0,0,0,0.35);
+}
+
+.logo{font-size:28px;font-weight:700;}
+
+.search{
+  padding:12px 20px;
+  border-radius:30px;
+  border:none;
+  outline:none;
+  width:240px;
+}
+
+.hero{
+  text-align:center;
+  padding:90px 20px 50px;
+}
+
+.hero h1{font-size:52px;}
+.hero p{opacity:.85;}
+
+.products{
+  padding:50px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+}
+
+.card{
+  position:relative;
+  backdrop-filter:blur(30px);
+  background:rgba(255,255,255,0.12);
+  border-radius:22px;
+  padding:18px;
+  transition:.35s ease;
+  overflow:hidden;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.9));
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.03);
+}
+
+/* IMAGE SWIPER */
+.swiper{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:200px;
+  overflow-x:auto;
+  display:flex;
+  scroll-snap-type:x mandatory;
+  gap:8px;
+  border-radius:18px;
+}
+
+.swiper img{
+  min-width:100%;
+  height:200px;
+  object-fit:cover;
+  scroll-snap-align:center;
+  border-radius:18px;
+}
+
+.card h3,
+.card p{
+  position:relative;
+  z-index:1;
+  margin-top:10px;
+}
+
+/* GO BUTTON */
+.go-btn{
+  position:absolute;
+  bottom:16px;
+  right:16px;
+  z-index:2;
+  background:white;
+  color:black;
+  font-size:13px;
+  font-weight:600;
+  padding:6px 14px;
+  border-radius:20px;
+  text-decoration:none;
+}
+
+@media(max-width:600px){
+  .hero h1{font-size:36px;}
+  nav{padding:15px 20px;}
+  .products{padding:25px;}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">EVO</div>
+  <input class="search" id="search" placeholder="Search products...">
+</nav>
+
+<section class="hero">
+  <h1>WELCOME TO EVO</h1>
+  <p>Thank you for visiting, you are on the better side</p>
+</section>
+
+<section class="products" id="productGrid"></section>
+
+<script>
+const products = [
+  {
+    name:"SEAHELTON Bionic Heated Massager",
+    desc:"Wireless heated massager with deep tissue 4D kneading to relieve neck, shoulder, and back pain at home",
+    images:[
+      "https://m.media-amazon.com/images/I/71zY8mQ9oGL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71y3pZp0RCL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61oVnY3hFCL._SL1500_.jpg"
+    ],
+    link:"https://example.com/affiliate"
+  },
+  {
+    name:"Ergo Study Chair",
+    desc:"Comfort built for long study sessions",
+    images:[
+      "https://images.unsplash.com/photo-1616628182506-6b70c7bb7a24",
+      "https://images.unsplash.com/photo-1582582429416-5c64fca9c1d7",
+      "https://images.unsplash.com/photo-1598300053654-5d4c04f9dfab"
+    ],
+    link:"https://example.com/affiliate-chair"
+  }
+];
+
+const grid = document.getElementById("productGrid");
+const search = document.getElementById("search");
+
+function render(list){
+  grid.innerHTML="";
+  list.forEach(p=>{
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      <div class="swiper">
+        ${p.images.map(img=>`<img src="${img}">`).join("")}
+      </div>
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+      <a class="go-btn" href="${p.link}" target="_blank">GO</a>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+search.addEventListener("input",e=>{
+  const v=e.target.value.toLowerCase();
+  render(products.filter(p=>p.name.toLowerCase().includes(v)));
+});
+
+render(products);
+</script>
+
+</body>
+  </html>
